@@ -1,18 +1,32 @@
 <script>
+import axios from "axios";
 import CardComponent from './CardComponent.vue';
     export default {
         components:{
-            CardComponent
-        }
+            CardComponent,
+        },
+        data(){
+            return{
+                characters:[]
+            }
+        },
+        created() {
+            axios.get("https://www.breakingbadapi.com/api/characters").then((resp)=>{
+                this.characters= resp.data
+            })
+        },
     }
 </script>
 
 <template>
     <div class="card_container p-5 mt-4">
         <div class="chara_numbers text-white p-3 fw-bold">
-            Found 62 characters
+            Found {{characters.length}} characters
         </div>
-        <CardComponent/>
+        <div class="card_container p-3 row">
+            <CardComponent v-for="char in characters"
+                :info="char"/>
+        </div>
     </div>
 </template>
 
